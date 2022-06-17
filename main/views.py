@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, send_from_directory, abort
 from json.decoder import JSONDecodeError
+
+from flask import Blueprint, render_template, request, flash, redirect, url_for, send_from_directory, abort
+from loguru import logger
 
 from classes import File
 
@@ -29,10 +31,12 @@ def search_text():
     try:
         posts: list[dict] = file.search_word_in_content(s)
     except (FileNotFoundError, JSONDecodeError):
+        logger.error("Ошибка загрузки файла")
         abort(413)
     if posts is not None:
         return render_template('post_list.html', posts=posts, user_text=s)
     flash('По вашему запросу ничего не найдено, введите другой запрос', 'warning')
+    logger.info("Запрос в базе не найден")
     return redirect(url_for('.page_index'))
 
 

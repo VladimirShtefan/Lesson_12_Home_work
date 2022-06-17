@@ -1,6 +1,8 @@
+from json.decoder import JSONDecodeError
+
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, abort
 from werkzeug.datastructures import FileStorage
-from json.decoder import JSONDecodeError
+from loguru import logger
 
 from classes import Post, File
 
@@ -31,6 +33,7 @@ def add_post():
                 file.write_data_in_file({"pic": picture_path,
                                          "content": content})
             except (FileNotFoundError, JSONDecodeError):
+                logger.error("Ошибка загрузки файла")
                 abort(413)
             session['picture'] = picture_path
             session['content'] = content
@@ -38,6 +41,7 @@ def add_post():
             return redirect(url_for('.post_uploaded'))
         else:
             flash('Не верный формат файла изображения. Используйте JPG, PNG', 'warning')
+            logger.info("Не верный формат изображения")
             return redirect(url_for('.add_post'))
     return render_template('post_form.html')
 
