@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить пост</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main>
+    <a href="{{ url_for('main_blueprint.page_index') }}" class="link">Назад</a>
+    <h1>Добавить пост</h1>
+    <form action="{{ url_for('loader_blueprint.add_post') }}" method="POST" enctype="multipart/form-data">
+        <p>Картинка к посту</p>
+        <div>
+            <input type="file" name="picture">
+        </div>
+        <p>Текст к посту</p>
+        <div>
+            <label>
+                <textarea name="content" rows="5" ></textarea>
+            </label>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class=flashes style="padding-left: 0;">
+                        {% for category, message in messages %}
+                            <li class="{{ category }}">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div>
+            <input type="submit" value="Добавить" class="button">
+        </div>
+    </form>
+</main>
+</body>
+</html>

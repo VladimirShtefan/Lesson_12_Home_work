@@ -1,7 +1,7 @@
 /* Селекторы по тегам */
 
 body {
-    font-family: arial, serif;
+    font-family: arial;
     font-size: 18px;
 }
 
@@ -34,10 +34,7 @@ textarea {
 }
 
 input[type=file] {
-
     margin-bottom: 16px;
-
-
 }
 
 a {
@@ -57,4 +54,7 @@ a {
     font-size: 18px;
 }
 
-
+.warning {
+    color : red;
+    list-style-type : None;
+}

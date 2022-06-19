@@ -1,2 +1,7 @@
 /venv/
 .idea
+/uploads
+main.log
+__pycache__/
+loader/__pycache__
+main/__pycache__
