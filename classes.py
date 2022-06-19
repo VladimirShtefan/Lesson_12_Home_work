@@ -2,6 +2,9 @@ import json
 import os.path
 
 from werkzeug.datastructures import FileStorage
+from werkzeug.local import LocalProxy
+
+from path import Path
 
 
 class Post:
@@ -21,8 +24,13 @@ class Post:
             Проверка разрещения файла
         :return: True/False результат проверки
         """
-        file_extension: str = self.picture.filename.split('.')[-1]
-        if file_extension in {'jpg', 'png'}:
+        file_extension: str = self.picture.mimetype
+        if file_extension in {'image/jpg', 'image/png'}:
+            return True
+        return False
+
+    def check_missing_file(self) -> bool:
+        if str(self.picture).split("'")[1] == '':
             return True
         return False
 
@@ -32,10 +40,11 @@ class Post:
         :return: None
         """
         filename: str = self.picture.filename
-        path: str = 'uploads/images/'
-        if not os.path.exists(path):
-            os.mkdir(path)
-        self.picture.save(f"./uploads/images/{filename}")
+        path = Path
+        if not os.path.exists(path.UPLOADS_PATH):
+            os.mkdir(f'{path.CURRENT_PATH}/uploads')
+            os.mkdir(path.UPLOADS_PATH)
+        self.picture.save(f"{path.UPLOADS_PATH}{filename}")
 
     def get_content(self) -> str:
         return self.content
@@ -80,3 +89,13 @@ class File:
                     list_by_search_text.append(post)
         if list_by_search_text:
             return list_by_search_text
+
+
+class Page:
+    def __init__(self, request: LocalProxy):
+        self.request = request
+
+    def get_referrer(self, path: str):
+        if self.request:
+            return self.request
+        return path

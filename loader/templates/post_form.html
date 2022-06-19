@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Добавить пост</title>
-    <link rel="stylesheet" href="../../static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 <main>
-    <a href="{{ url_for('main_blueprint.page_index') }}" class="link">Назад</a>
+    <a href="{{ back }}" class="link">Назад</a>
     <h1>Добавить пост</h1>
     <form action="{{ url_for('loader_blueprint.add_post') }}" method="POST" enctype="multipart/form-data">
         <p>Картинка к посту</p>

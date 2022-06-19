@@ -3,7 +3,7 @@ from json.decoder import JSONDecodeError
 from flask import Blueprint, render_template, request, flash, redirect, url_for, send_from_directory, abort
 from loguru import logger
 
-from classes import File
+from classes import File, Page
 
 # создаем новый блюпринт
 main_blueprint = Blueprint('main_blueprint', __name__, template_folder='templates')
@@ -33,11 +33,12 @@ def search_text():
     except (FileNotFoundError, JSONDecodeError):
         logger.error("Ошибка загрузки файла")
         abort(413)
+    back = Page(request.referrer).get_referrer(url_for('main_blueprint.page_index'))
     if posts is not None:
-        return render_template('post_list.html', posts=posts, user_text=s)
+        return render_template('post_list.html', posts=posts, user_text=s, back=back)
     flash('По вашему запросу ничего не найдено, введите другой запрос', 'warning')
     logger.info("Запрос в базе не найден")
-    return redirect(url_for('.page_index'))
+    return redirect(url_for('main_blueprint.page_index'))
 
 
 @main_blueprint.route("/uploads/<path:path>", methods=['GET'])

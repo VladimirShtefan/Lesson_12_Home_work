@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Все посты найденные по запросу "{{ user_text }}"</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 <main>
-    <a href="{{ url_for('.page_index') }}" class="link">Назад</a>
+    <a href="{{ back }}" class="link">Назад</a>
     <h1>Посты по запросу "{{ user_text }}"</h1>
     <div class="post">
         {% for post in posts %}
